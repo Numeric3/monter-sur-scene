@@ -25,6 +25,20 @@ public class Tele {
 	      //Adding scene to the stage 
 	      stage.setScene(scene);   
 	}
+	public Tele(String title,int width, int height) {
+		//Creating a Group object   
+	      root = new Group();
+	      
+	      //Creating a scene object  
+	      scene = new Scene(root, width, height); 
+	      
+	      //Setting title to the Stage 
+	      stage.setTitle(title); 
+	   
+	      //Adding scene to the stage 
+	      stage.setScene(scene);   
+	}
+	
 	public void setCamera(Cam3D camera) {
 		this.cam = camera;
 		camera.setScene(scene);
