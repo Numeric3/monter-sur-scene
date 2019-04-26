@@ -1,7 +1,10 @@
 package tef.util.view;
 
 
-import javafx.geometry.NodeOrientation;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Hashtable;
+
 import javafx.geometry.Point3D;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
@@ -25,6 +28,11 @@ public class Cam3D extends PerspectiveCamera{
 			new Point3D(0.0,0.0,0.0)};
 
 	protected double[] angle = {0.0, 0.0, 0.0, 0.0};
+	
+	private Hashtable<String,Object[][]> ht = new Hashtable<String,Object[][]>();
+	private int hsCompteur = -1;
+ 
+	private Object initInfo[][] = {{new double[1],new double[1],new double[1],new Point3D[1]}};
 	
 
 	public Cam3D() {
@@ -56,8 +64,20 @@ public class Cam3D extends PerspectiveCamera{
 	}
 	
 	public void reinitialize() {
-		for(int x = 0;x < 4; x++)
-			loadInitializeCameraPos(x);	
+		//for(int x = 0;x < 4; x++)
+			//loadInitializeCameraPos(x);
+		Enumeration<Object[][]> e = ht.elements();
+		while(e.hasMoreElements()) {
+			Object[][] obj = e.nextElement();
+			this.setTranslateX((double) obj[0][0]);
+			this.setTranslateY((double) obj[0][1]);
+			this.setTranslateZ((double) obj[0][2]);
+			this.setRotationAxis((Point3D) obj[0][3]);
+		}
+		
+		
+		
+		
 	}
 	
 	public void setScene(Scene scene) {
@@ -85,17 +105,34 @@ public class Cam3D extends PerspectiveCamera{
 		    this.scene.setOnKeyPressed((f) ->{
 		    	  String keyCode = f.getCode().toString();
 		    	  if(keyCode.equals(this.up)) {
-		    		 
+		    		 //On enregistre la position initiale par ordre
+		    		  initInfo[0][0] = this.getTranslateX();
+		    		  initInfo[0][1] = this.getTranslateY();
+		    		  initInfo[0][2] = this.getTranslateZ();
+		    		  initInfo[0][3] = this.getRotationAxis();
+		    		  setFirstUsedOrder("up",initInfo);
+		    		  
+		    		  //On définit le mouvement en fonction de la touche
 		    		  this.setTranslateX(this.getTranslateX());
 		    		  this.setTranslateY(this.getTranslateY()-1);
 		    		  this.setTranslateZ(this.getTranslateZ()+1);
 		    		  this.setRotationAxis(Rotate.X_AXIS);
 		    		  this.setRotate(this.getRotate()-1);
-		    		  getInitialPos(0);	 
+		    		  getInitialPos(0);
+		   
+		    		  
+		    		  
 		    		  
 		    	  }
 		    	  if(keyCode.equals(this.down)) {
-		    		 
+		    		//On enregistre la position initiale par ordre
+		    		  initInfo[0][0] = this.getTranslateX();
+		    		  initInfo[0][1] = this.getTranslateY();
+		    		  initInfo[0][2] = this.getTranslateZ();
+		    		  initInfo[0][3] = this.getRotationAxis();
+		    		  setFirstUsedOrder("down",initInfo);
+		    		  
+		    		  
 		    		  this.setTranslateX(this.getTranslateX());
 		    		  this.setTranslateY(this.getTranslateY()+1);
 		    		  this.setTranslateZ(this.getTranslateZ()-1);
@@ -105,6 +142,12 @@ public class Cam3D extends PerspectiveCamera{
 		    		  
 		    	  }
 		    	  if(keyCode.equals(this.left)) {
+		    		//On enregistre la position initiale par ordre
+		    		  initInfo[0][0] = this.getTranslateX();
+		    		  initInfo[0][1] = this.getTranslateY();
+		    		  initInfo[0][2] = this.getTranslateZ();
+		    		  initInfo[0][3] = this.getRotationAxis();
+		    		  setFirstUsedOrder("left",initInfo);
 		    		
 		    		  this.setTranslateY(this.getTranslateY());
 		    		  this.setTranslateX(this.getTranslateX()+1);
@@ -114,6 +157,13 @@ public class Cam3D extends PerspectiveCamera{
 		    		  getInitialPos(2);
 		    		  		    	  }
 		    	  if(keyCode.equals(this.right)) {
+		    		//On enregistre la position initiale par ordre
+		    		  initInfo[0][0] = this.getTranslateX();
+		    		  initInfo[0][1] = this.getTranslateY();
+		    		  initInfo[0][2] = this.getTranslateZ();
+		    		  initInfo[0][3] = this.getRotationAxis();
+		    		  setFirstUsedOrder("right",initInfo);
+		    		  
 		    		  
 		    		  this.setTranslateY(this.getTranslateY());
 		    		  this.setTranslateX(this.getTranslateX()+1);
@@ -125,7 +175,8 @@ public class Cam3D extends PerspectiveCamera{
 		    		  
 		    	  }
 		    	  
-		    	  if(keyCode.equals(KeyCode.ALT.toString())) {reinitialize(); }
+		    	  if(keyCode.equals(KeyCode.ALT.toString())) {
+		    		  reinitialize(); }
 		    	  
 		    });    
 		}
@@ -140,7 +191,12 @@ public class Cam3D extends PerspectiveCamera{
   		  this.angle[x] = this.getRotate();
   		  firstUsed[x] = true;  
   	  }
-		
+	}
+	public void setFirstUsedOrder(String order,Object[][] list) {
+		if((hsCompteur<=3) && (!ht.containsKey(order))) { 
+			ht.put(order, list);
+			hsCompteur+=1;
+			}
 	}
 		
 		
