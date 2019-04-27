@@ -6,9 +6,12 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 import javafx.geometry.Point3D;
+import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
 public class Cam3D extends PerspectiveCamera{
@@ -36,15 +39,23 @@ public class Cam3D extends PerspectiveCamera{
 	
 
 	public Cam3D() {
+		/*
+		 * On initialise la camera avec ses coordonnées
+		 *  d'origines (0,0,0); 
+		 * 
+		 */
         super(true);
         this.setTranslateX(0); 
         this.setTranslateY(0); 
         this.setTranslateZ(0); 
         
+        //On récule suffisament la cam en arrière
+        //Afin de voir toute la scène
         this.setTranslateZ (-1000);
-        this.setNearClip (0.1);
+        this.setNearClip (1.0);
         this.setFarClip (2500.0);
         this.setFieldOfView (35);
+      
  
 	}
 	public Cam3D(double x, double y, double z) {
@@ -84,7 +95,6 @@ public class Cam3D extends PerspectiveCamera{
 		this.scene = scene;
 		scene.setCamera(this);
 		
-		
 		if(this.mnemo) {
 			setMnemonic(this.left,this.up,this.right,this.down);
 		}
@@ -116,7 +126,7 @@ public class Cam3D extends PerspectiveCamera{
 		    		  this.setTranslateX(this.getTranslateX());
 		    		  this.setTranslateY(this.getTranslateY()-1);
 		    		  this.setTranslateZ(this.getTranslateZ()+1);
-		    		  this.setRotationAxis(Rotate.X_AXIS);
+		    		  //this.setRotationAxis(Rotate.X_AXIS);
 		    		  this.setRotate(this.getRotate()-1);
 		    		  getInitialPos(0);
 		   
@@ -136,9 +146,10 @@ public class Cam3D extends PerspectiveCamera{
 		    		  this.setTranslateX(this.getTranslateX());
 		    		  this.setTranslateY(this.getTranslateY()+1);
 		    		  this.setTranslateZ(this.getTranslateZ()-1);
-		    		  this.setRotationAxis(Rotate.X_AXIS);
+		    		  //this.setRotationAxis(Rotate.X_AXIS);
 		    		  this.setRotate(this.getRotate()+1);
 		    		  getInitialPos(1);
+		    		 
 		    		  
 		    	  }
 		    	  if(keyCode.equals(this.left)) {
@@ -152,7 +163,7 @@ public class Cam3D extends PerspectiveCamera{
 		    		  this.setTranslateY(this.getTranslateY());
 		    		  this.setTranslateX(this.getTranslateX()+1);
 		    		  this.setTranslateZ(this.getTranslateZ()-1);
-		    		  this.setRotationAxis(Rotate.Y_AXIS);
+		    		  //this.setRotationAxis(Rotate.Y_AXIS);
 		    		  this.setRotate(this.getRotate()+1);
 		    		  getInitialPos(2);
 		    		  		    	  }
@@ -168,7 +179,7 @@ public class Cam3D extends PerspectiveCamera{
 		    		  this.setTranslateY(this.getTranslateY());
 		    		  this.setTranslateX(this.getTranslateX()+1);
 		    		  this.setTranslateZ(this.getTranslateZ()-1);
-		    		  this.setRotationAxis(Rotate.Y_AXIS);
+		    		 // this.setRotationAxis(Rotate.Y_AXIS);
 		    		  this.setRotate(this.getRotate()-1);
 		    		  getInitialPos(3);
 		    		  
@@ -176,7 +187,9 @@ public class Cam3D extends PerspectiveCamera{
 		    	  }
 		    	  
 		    	  if(keyCode.equals(KeyCode.ALT.toString())) {
-		    		  reinitialize(); }
+		    		  reinitialize();
+		    		 
+		    		  }
 		    	  
 		    });    
 		}

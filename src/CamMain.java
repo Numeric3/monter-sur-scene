@@ -5,7 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import javafx.stage.Stage;
-import tef.util.view.Cam3D; 
+import tef.util.view.Cam3D;
+import tef.util.view.Cam3D_2; 
          
 public class CamMain extends Application { 
    @Override 
@@ -63,9 +64,10 @@ public class CamMain extends Application {
       Scene scene = new Scene(root, 600, 300); 
        
       //Setting camera 
-      Cam3D camera = new Cam3D();
-      camera.setScene(scene);
-      camera.setMnemonic("L", "U", "R", "D");
+      Cam3D_2 camera = new Cam3D_2();
+      camera.isLeftMovable(stage);
+      //camera.setScene(scene);
+      //camera.setMnemonic("L", "U", "R", "D");
       //camera.setMnemonic();
       /*
       PerspectiveCamera camera = new PerspectiveCamera(false); 
